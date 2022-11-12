@@ -12,9 +12,6 @@ class BookingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<BookingController>();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Bookings"),
-      ),
       body: FutureBuilder(
         future: controller.getBookings(
             {'UserType': "Customer", 'SkipCount': 0, "MaxResultCount": 10}),

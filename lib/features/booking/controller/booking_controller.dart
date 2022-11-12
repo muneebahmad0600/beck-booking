@@ -7,10 +7,8 @@ import 'package:beck_booking/services/booking/booking_service.dart';
 import 'package:get/get.dart';
 
 import '../../../core/widgets/dialog.dart';
-import '../../../services/secure_storage/storage_user.dart';
 
 class BookingController extends GetxController {
-  final secureStorage = StorageUser();
   final _bookingService = Get.find<BookingService>();
 
   List<BookingResult> bookings = [];

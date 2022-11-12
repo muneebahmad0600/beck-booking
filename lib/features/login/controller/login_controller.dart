@@ -49,7 +49,7 @@ class LoginController extends GetxController {
         return;
       }
       secureStorage.writeUserInformationToStorage(loginData);
-      Get.offAllNamed('/bookings');
+      Get.offAllNamed('/main');
     } on Exception {
       displaySnackbar('Error In SignIn', 'Error in SignIn');
     }

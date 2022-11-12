@@ -5,14 +5,14 @@ import 'package:get/get.dart';
 import '../../../core/widgets/fields.dart';
 import '../controller/login_controller.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginScreenState extends State<LoginScreen> {
   final _loginController = Get.find<LoginController>();
   final loginFormKey = GlobalKey<FormState>();
   var userNameController = TextEditingController();

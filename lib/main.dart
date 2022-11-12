@@ -1,17 +1,19 @@
-import 'package:beck_booking/features/booking/binding/booking_binding.dart';
 import 'package:beck_booking/features/booking/view/bookings_screen.dart';
+import 'package:beck_booking/features/groups/view/group_screen.dart';
+import 'package:beck_booking/features/main/view/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
-import 'features/login/binding/login_binding.dart';
-import 'features/login/view/login.dart';
+import 'bindings.dart';
+import 'features/login/view/login_screen.dart';
 
 const FlutterSecureStorage storage = FlutterSecureStorage();
 
 void main() async {
   await dotenv.load(fileName: ".env");
+  GlobalBindings().dependencies();
   runApp(const MyApp());
 }
 
@@ -24,20 +26,27 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Beck Bookings',
       theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity),
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
       debugShowCheckedModeBanner: false,
       initialRoute: '/login',
       getPages: [
         GetPage(
           name: '/login',
-          page: () => const Login(),
-          binding: LoginBindings(),
+          page: () => const LoginScreen(),
+        ),
+        GetPage(
+          name: '/main',
+          page: () => const MainScreen(),
         ),
         GetPage(
           name: '/bookings',
           page: () => const BookingsScreen(),
-          binding: BookingBinding(),
+        ),
+        GetPage(
+          name: '/groups',
+          page: () => const GroupScreen(),
         ),
       ],
     );

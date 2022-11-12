@@ -30,6 +30,8 @@ class AuthService implements AuthServiceBase {
     return BaseResponse();
   }
 
+  // BeckIT
+  // Mens_room
   @override
   Future<BaseResponse> isTanentAvailable() async {
     TenantInput input = TenantInput(tenancyName: "Mens_room");
