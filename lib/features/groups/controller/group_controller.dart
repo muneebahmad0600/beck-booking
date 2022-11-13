@@ -1,3 +1,4 @@
+import 'package:beck_booking/core/models/group/group_activity_result.dart';
 import 'package:get/get.dart';
 
 import '../../../core/models/group/group_list_result.dart';
@@ -24,5 +25,20 @@ class GroupController extends GetxController {
       displaySnackbar('Error!', 'Error fetching bookings');
     }
     return groups;
+  }
+
+  Future<List<GroupActivityResult>> getGroupInvites(
+      Map<String, dynamic> params) async {
+    try {
+      BaseResponse response = await _groupService.getGroupInvites(params);
+      if (response.success!) {
+        var result = GroupActivityListResult.fromJson(response.result);
+        return result.items ?? [];
+      }
+      return [];
+    } on Exception {
+      displaySnackbar('Error!', 'Error fetching group invites');
+    }
+    return [];
   }
 }

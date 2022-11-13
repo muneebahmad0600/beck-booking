@@ -34,7 +34,7 @@ class AuthService implements AuthServiceBase {
   // Mens_room
   @override
   Future<BaseResponse> isTanentAvailable() async {
-    TenantInput input = TenantInput(tenancyName: "Mens_room");
+    TenantInput input = TenantInput(tenancyName: "BeckIT");
     var url = 'api/services/app/Account/IsTenantAvailable';
     var data = json.encode(input.toJson());
     try {

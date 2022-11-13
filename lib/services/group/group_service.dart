@@ -26,4 +26,17 @@ class GroupService extends GroupServiceBase {
     }
     return BaseResponse();
   }
+
+  @override
+  Future<BaseResponse> getGroupInvites(Map<String, dynamic> params) async {
+    String url = 'api/services/app/Invite/GetGroupInvites';
+    try {
+      var response = await _httpService.get(url, params: params);
+      var parsedResponse = BaseResponse.fromJson(response.data);
+      return parsedResponse;
+    } on Exception catch (e) {
+      log(e.toString());
+    }
+    return BaseResponse();
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:beck_booking/features/groups/view/group_activity_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,9 +21,9 @@ class GroupScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 var group = snapshot.data![index];
                 return ListTile(
-                  // onTap: () => Get.to(BookingDetailScreen(
-                  //   booking: booking,
-                  // )),
+                  onTap: () => Get.to(GroupActivityListScreen(
+                    groupId: group.id!,
+                  )),
                   title: Text(group.name ?? ''),
                 );
               },
