@@ -132,19 +132,22 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
                         hintText: "Add a Comment",
                         suffix: GestureDetector(
                           onTap: () {
-                            controller
-                                .addComment(
-                                  BookingCommentInput(
-                                    activityId: booking.activityId,
-                                    commentText: commentController.text.trim(),
-                                  ),
-                                )
-                                .then((value) => {
-                                      if (value)
-                                        setState(() {
-                                          commentController.text = '';
-                                        })
-                                    });
+                            if (commentController.text.trim() != '') {
+                              controller
+                                  .addComment(
+                                    BookingCommentInput(
+                                      activityId: booking.activityId,
+                                      commentText:
+                                          commentController.text.trim(),
+                                    ),
+                                  )
+                                  .then((value) => {
+                                        if (value)
+                                          setState(() {
+                                            commentController.text = '';
+                                          })
+                                      });
+                            }
                           },
                           child: const Icon(Icons.send_rounded),
                         ),
