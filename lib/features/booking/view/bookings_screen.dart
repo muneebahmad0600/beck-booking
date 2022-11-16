@@ -17,19 +17,25 @@ class BookingsScreen extends StatelessWidget {
             {'UserType': "Customer", 'SkipCount': 0, "MaxResultCount": 10}),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return ListView.builder(
+            return ListView.separated(
+              padding: const EdgeInsets.all(16.0),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 var booking = snapshot.data![index];
-                return ListTile(
-                  onTap: () => Get.to(BookingDetailScreen(
-                    booking: booking,
-                  )),
-                  title: Text(
-                      '${DateFormat('MMM dd, yyyy').format(DateTime.parse(booking.fromDate!))} - ${DateFormat('MMM dd, yyyy').format(DateTime.parse(booking.toDate!))}'),
-                  subtitle: Text(booking.bookingStatus!),
+                return Card(
+                  elevation: 5.0,
+                  child: ListTile(
+                    onTap: () => Get.to(BookingDetailScreen(
+                      booking: booking,
+                    )),
+                    title: Text(
+                        '${DateFormat('MMM dd, yyyy').format(DateTime.parse(booking.fromDate!))} - ${DateFormat('MMM dd, yyyy').format(DateTime.parse(booking.toDate!))}'),
+                    subtitle: Text(booking.bookingStatus!),
+                    trailing: const Icon(Icons.arrow_forward),
+                  ),
                 );
               },
+              separatorBuilder: (context, index) => const SizedBox(height: 10),
             );
           }
           return const Center(

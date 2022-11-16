@@ -8,8 +8,8 @@ import '../../groups/view/group_screen.dart';
 class MainController extends GetxController {
   int _index = 0;
   final List<DrawerItem> _drawerItems = [
-    DrawerItem("Groups", Icons.line_style_rounded, const GroupScreen()),
     DrawerItem("Bookings", Icons.list_outlined, const BookingsScreen()),
+    DrawerItem("Groups", Icons.line_style_rounded, const GroupScreen()),
   ];
 
   get index => _index;
