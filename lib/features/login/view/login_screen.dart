@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:beck_booking/core/common/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/widgets/fields.dart';
-import '../controller/login_controller.dart';
+import '../controller/auth_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -13,15 +15,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _loginController = Get.find<LoginController>();
-  final loginFormKey = GlobalKey<FormState>();
+  final _controller = Get.find<AuthController>();
+  final _formKey = GlobalKey<FormState>();
   var userNameController = TextEditingController();
   var passwordController = TextEditingController();
+  bool loading = false;
 
   @override
   void initState() {
     super.initState();
-    _loginController.isTenantAvailable();
+    _controller.isTenantAvailable();
   }
 
   @override
@@ -34,18 +37,13 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*  appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Login', style: TextStyle(fontSize: 20)),
-      ), */
       body: Container(
         alignment: Alignment.center,
         child: Container(
           height: Height.fullHeight(context) / 2,
           padding: const EdgeInsets.only(left: 40, right: 40),
           child: Form(
-            key: loginFormKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+            key: _formKey,
             child: ListView(
               children: [
                 Container(
@@ -57,29 +55,44 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Container(
                     child: Fields.getTextField(
-                        userNameController, 'User Name', false, Icons.email)),
+                  userNameController,
+                  'User Name',
+                  false,
+                  Icons.email_outlined,
+                )),
                 const SizedBox(
                   height: 20,
                 ),
                 Container(
                     child: Fields.getTextField(
-                        passwordController, 'Password', true, Icons.password)),
+                  passwordController,
+                  'Password',
+                  true,
+                  Icons.password,
+                )),
                 const SizedBox(
                   height: 30,
                 ),
-                SizedBox(
-                  height: 60,
-                  child: TextButton(
-                    style: btnStyle(),
-                    onPressed: () {
-                      _loginController.login(
-                          userNameController.text, passwordController.text);
-                    },
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(fontSize: 20),
+                AnimatedCrossFade(
+                  firstChild: SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: TextButton(
+                      style: btnStyle(),
+                      onPressed: _handleLogin,
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
                   ),
+                  secondChild: const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  ),
+                  crossFadeState: loading
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
+                  duration: const Duration(milliseconds: 500),
                 ),
               ],
             ),
@@ -87,5 +100,28 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void _handleLogin() {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        loading = true;
+      });
+      _controller
+          .login(
+        userNameController.text,
+        passwordController.text,
+      )
+          .then((value) {
+        setState(() {
+          loading = false;
+        });
+        if (value) {
+          Timer(const Duration(milliseconds: 700), () {
+            Get.offAllNamed('/main');
+          });
+        }
+      });
+    }
   }
 }

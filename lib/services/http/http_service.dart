@@ -32,8 +32,8 @@ class HttpService implements HttpServiceBase {
       response = await _dio.get(requestUrl,
           queryParameters: params,
           options: Options(headers: {
-            Constant.COOKIE_KEY:
-                await StorageUser().readUserStorage(Constant.COOKIE_KEY)
+            Constant.TENANT_COOKIE_KEY:
+                await StorageUser().read(Constant.TENANT_COOKIE_KEY)
           }));
     } on DioError catch (e) {
       // ignore: avoid_print
@@ -52,8 +52,8 @@ class HttpService implements HttpServiceBase {
       response = await _dio.post(requestUrl,
           data: body,
           options: Options(headers: {
-            Constant.COOKIE_KEY:
-                await StorageUser().readUserStorage(Constant.COOKIE_KEY)
+            Constant.TENANT_COOKIE_KEY:
+                await StorageUser().read(Constant.TENANT_COOKIE_KEY)
           }));
     } on DioError catch (e) {
       // ignore: avoid_print

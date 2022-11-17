@@ -4,4 +4,5 @@ import '../../core/models/response/base_response.dart';
 abstract class AuthServiceBase {
   Future<BaseResponse> isTanentAvailable();
   Future<BaseResponse> login(LoginInput input);
+  Future<BaseResponse> getSessionDataForUser();
 }

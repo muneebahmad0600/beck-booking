@@ -5,7 +5,7 @@ class Constant {
   static const USER_EMAIL_KEY = 'email';
   static const PERSON_ID_KEY = 'personId';
   static const AUTH_TOKEN_KEY = 'authToken';
-  static const COOKIE_KEY = 'Abp.TenantId';
+  static const TENANT_COOKIE_KEY = 'Abp.TenantId';
   static const USER_ID_TOKEN_KEY =
       'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier';
 }

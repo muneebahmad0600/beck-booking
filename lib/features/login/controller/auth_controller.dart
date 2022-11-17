@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:beck_booking/core/models/login/session.dart';
 import 'package:beck_booking/core/models/response/base_response.dart';
 import 'package:get/get.dart';
 
@@ -9,11 +12,10 @@ import '../../../core/widgets/dialog.dart';
 import '../../../services/auth/auth_service.dart';
 import '../../../services/secure_storage/storage_user.dart';
 
-class LoginController extends GetxController {
+class AuthController extends GetxController {
+  Session? session;
   final secureStorage = StorageUser();
   final _authService = Get.find<AuthService>();
-
-  var loginInput = LoginInput();
 
   void isTenantAvailable() async {
     try {
@@ -24,34 +26,58 @@ class LoginController extends GetxController {
         return;
       }
       TenantResult tanent = TenantResult.fromJson(response.result);
-      secureStorage.writeUserStorage(
-          Constant.COOKIE_KEY, tanent.tenantId!.toString());
+      secureStorage.save(
+          Constant.TENANT_COOKIE_KEY, tanent.tenantId!.toString());
     } on Exception {
       displaySnackbar('Error!', 'Error fetching tenant');
     }
   }
 
-  void login(String userName, String password) async {
+  Future<bool> login(String userName, String password) async {
     if (userName == "" || password == "") {
-      return;
+      return false;
     }
     try {
+      var loginInput = LoginInput();
       loginInput.password = password;
       loginInput.userName = userName;
       BaseResponse response = await _authService.login(loginInput);
       if (!response.success!) {
         displaySnackbar('Something went wrong', 'please try again');
-        return;
+        return false;
       }
       LoginResult loginData = LoginResult.fromJson(response.result);
       if (loginData.userId == 0) {
         displaySnackbar('Invalid Credentials', 'Invalid username and password');
-        return;
+        return false;
       }
-      secureStorage.writeUserInformationToStorage(loginData);
-      Get.offAllNamed('/main');
+      await secureStorage.saveUserData(loginData);
+      getSessionDataForUser();
+      return true;
     } on Exception {
       displaySnackbar('Error In SignIn', 'Error in SignIn');
+      return false;
     }
+  }
+
+  void getSessionDataForUser() async {
+    log("getting user data");
+    try {
+      BaseResponse response = await _authService.getSessionDataForUser();
+      if (!response.success!) {
+        displaySnackbar(
+            'Invalid Tenant', 'The tenant provided is not available.');
+        return;
+      }
+      session = Session.fromJson(response.result);
+      update();
+    } on Exception {
+      displaySnackbar('Error!', 'Error fetching tenant');
+    }
+  }
+
+  void logout() async {
+    await secureStorage.clear();
+    Get.offAllNamed("/login");
   }
 }

@@ -6,31 +6,32 @@ import '../../core/models/login/login_result.dart';
 class StorageUser {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
 
-  void writeUserInformationToStorage(LoginResult data) {
-    storage.write(key: Constant.USER_ID_KEY, value: data.userId.toString());
+  Future saveUserData(LoginResult data) async {
+    await storage.write(
+        key: Constant.USER_ID_KEY, value: data.userId.toString());
     // storage.write(key: Constant.USER_EMAIL_KEY, value: result.email);
     // storage.write(
     //     key: Constant.PERSON_ID_KEY, value: result.personId.toString());
-    storage.write(key: Constant.AUTH_TOKEN_KEY, value: data.accessToken);
+    await storage.write(key: Constant.AUTH_TOKEN_KEY, value: data.accessToken);
   }
 
-  Future writeUserStorage(String key, String value) async {
+  Future save(String key, String value) async {
     return await storage.write(key: key, value: value);
   }
 
-  Future<String?> readUserStorage(String key) async {
+  Future<String?> read(String key) async {
     return await storage.read(key: key);
   }
 
-  Future<Map<String, String>> readAllUserStorage() async {
+  Future<Map<String, String>> readAll() async {
     return await storage.readAll();
   }
 
-  Future<void> removeUserStorage(String key) async {
+  Future<void> remove(String key) async {
     return await storage.delete(key: key);
   }
 
-  Future<void> removeAllUserStorage() async {
+  Future<void> clear() async {
     await storage.deleteAll();
   }
 }

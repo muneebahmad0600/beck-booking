@@ -15,6 +15,6 @@ class Height {
 ButtonStyle btnStyle() {
   return ButtonStyle(
     foregroundColor: MaterialStateProperty.all<Color>(whiteColor),
-    backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
+    backgroundColor: MaterialStateProperty.all<Color>(blueColor),
   );
 }

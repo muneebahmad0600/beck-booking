@@ -16,6 +16,24 @@ class AuthService implements AuthServiceBase {
     _httpService.init();
   }
 
+  // BeckIT
+  // Mens_room
+  // optician
+  @override
+  Future<BaseResponse> isTanentAvailable() async {
+    TenantInput input = TenantInput(tenancyName: "optician");
+    var url = 'api/services/app/Account/IsTenantAvailable';
+    var data = json.encode(input.toJson());
+    try {
+      var response = await _httpService.post(url, data);
+      var parsedResponse = BaseResponse.fromJson(response.data);
+      return parsedResponse;
+    } on Exception catch (e) {
+      log(e.toString());
+    }
+    return BaseResponse();
+  }
+
   @override
   Future<BaseResponse> login(LoginInput input) async {
     var loginUrl = 'api/TokenAuth/Authenticate';
@@ -30,16 +48,11 @@ class AuthService implements AuthServiceBase {
     return BaseResponse();
   }
 
-  // BeckIT
-  // Mens_room
-  // optician
   @override
-  Future<BaseResponse> isTanentAvailable() async {
-    TenantInput input = TenantInput(tenancyName: "optician");
-    var url = 'api/services/app/Account/IsTenantAvailable';
-    var data = json.encode(input.toJson());
+  Future<BaseResponse> getSessionDataForUser() async {
+    var loginUrl = 'api/services/app/Session/GetCurrentLoginInformations';
     try {
-      var response = await _httpService.post(url, data);
+      var response = await _httpService.get(loginUrl);
       var parsedResponse = BaseResponse.fromJson(response.data);
       return parsedResponse;
     } on Exception catch (e) {
