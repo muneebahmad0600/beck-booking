@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MainScreen extends StatelessWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  MainScreen({Key? key}) : super(key: key) {
+    Get.put(MainController());
+    Get.put(AuthController());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,18 +26,38 @@ class MainScreen extends StatelessWidget {
                   return Drawer(
                     child: Column(
                       children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: DrawerHeader(
-                            decoration: const BoxDecoration(
-                                border: Border(
-                              bottom: BorderSide(
-                                width: 1.0,
-                                color: Colors.grey,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 150,
+                                width: double.infinity,
+                                child: DrawerHeader(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: whiteColor),
+                                  ),
+                                  child: Image.network(
+                                    authController.session?.company?.logoUrl ??
+                                        '',
+                                  ),
+                                ),
                               ),
-                            )),
-                            child: Image.network(
-                                authController.session?.company?.logoUrl ?? ''),
+                              Text(
+                                authController.session?.user?.userName ?? '',
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              Text(
+                                authController.session?.user?.emailAddress ??
+                                    '',
+                                style: const TextStyle(),
+                              ),
+                              const Divider(thickness: 2.0)
+                            ],
                           ),
                         ),
                         Expanded(

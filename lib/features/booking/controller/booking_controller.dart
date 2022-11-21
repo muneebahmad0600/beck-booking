@@ -6,10 +6,11 @@ import 'package:beck_booking/core/models/response/base_response.dart';
 import 'package:beck_booking/services/booking/booking_service.dart';
 import 'package:get/get.dart';
 
+import '../../../core/models/booking/booking_detail_result.dart';
 import '../../../core/widgets/dialog.dart';
 
 class BookingController extends GetxController {
-  final _bookingService = Get.find<BookingService>();
+  final _bookingService = BookingService();
 
   List<BookingResult> bookings = [];
 
@@ -28,18 +29,18 @@ class BookingController extends GetxController {
     return bookings;
   }
 
-  Future<BookingResult> getBookingById(String id) async {
+  Future<BookingDetailResult> getBookingById(String id) async {
     try {
       BaseResponse response = await _bookingService.getBookingById(id);
       if (response.success!) {
-        var booking = BookingResult.fromJson(response.result);
+        var booking = BookingDetailResult.fromJson(response.result);
         return booking;
       }
-      return BookingResult();
+      return BookingDetailResult();
     } on Exception {
       displaySnackbar('Error!', 'Error fetching bookings');
     }
-    return BookingResult();
+    return BookingDetailResult();
   }
 
   Future<BookingCommentListResult> getBookingComments(String id) async {

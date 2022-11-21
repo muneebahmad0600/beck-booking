@@ -15,11 +15,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _controller = Get.find<AuthController>();
+  late AuthController _controller;
   final _formKey = GlobalKey<FormState>();
   var userNameController = TextEditingController();
   var passwordController = TextEditingController();
   bool loading = false;
+
+  _LoginScreenState() {
+    Get.put(AuthController());
+    _controller = Get.find<AuthController>();
+  }
 
   @override
   void initState() {

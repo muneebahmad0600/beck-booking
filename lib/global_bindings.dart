@@ -10,12 +10,12 @@ import 'package:get/get.dart';
 class GlobalBindings extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => AuthController());
-    Get.lazyPut(() => AuthService());
-    Get.lazyPut(() => MainController());
-    Get.lazyPut(() => BookingController());
-    Get.lazyPut(() => BookingService());
-    Get.lazyPut(() => GroupController());
-    Get.lazyPut(() => GroupService());
+    Get.put(AuthController(), permanent: true);
+    Get.put(AuthService(), permanent: true);
+    Get.put(MainController(), permanent: true);
+    Get.put(BookingController(), permanent: true);
+    Get.put(BookingService(), permanent: true);
+    Get.put(GroupController(), permanent: true);
+    Get.put(GroupService(), permanent: true);
   }
 }

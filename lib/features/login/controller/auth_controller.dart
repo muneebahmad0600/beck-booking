@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:beck_booking/core/models/login/session.dart';
 import 'package:beck_booking/core/models/response/base_response.dart';
+import 'package:beck_booking/global_bindings.dart';
 import 'package:get/get.dart';
 
 import '../../../core/common/constants.dart';
@@ -15,7 +14,7 @@ import '../../../services/secure_storage/storage_user.dart';
 class AuthController extends GetxController {
   Session? session;
   final secureStorage = StorageUser();
-  final _authService = Get.find<AuthService>();
+  final _authService = AuthService();
 
   void isTenantAvailable() async {
     try {
@@ -61,7 +60,6 @@ class AuthController extends GetxController {
   }
 
   void getSessionDataForUser() async {
-    log("getting user data");
     try {
       BaseResponse response = await _authService.getSessionDataForUser();
       if (!response.success!) {
@@ -78,6 +76,7 @@ class AuthController extends GetxController {
 
   void logout() async {
     await secureStorage.clear();
+    GlobalBindings().dependencies();
     Get.offAllNamed("/login");
   }
 }
