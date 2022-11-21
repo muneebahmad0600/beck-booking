@@ -1,5 +1,5 @@
 import 'package:beck_booking/core/models/group/group_activity_result.dart';
-import 'package:get/get.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../../../core/models/group/group_list_result.dart';
 import '../../../core/models/group/group_result.dart';
@@ -7,8 +7,8 @@ import '../../../core/models/response/base_response.dart';
 import '../../../core/widgets/dialog.dart';
 import '../../../services/group/group_service.dart';
 
-class GroupController extends GetxController {
-  final _groupService = Get.find<GroupService>();
+class GroupController extends ChangeNotifier {
+  final _groupService = GroupService();
 
   List<GroupResult> groups = [];
 
@@ -18,7 +18,7 @@ class GroupController extends GetxController {
       if (response.success!) {
         var result = GroupListResult.fromJson(response.result);
         groups = result.items ?? [];
-        update();
+        notifyListeners();
       }
       return groups;
     } on Exception {

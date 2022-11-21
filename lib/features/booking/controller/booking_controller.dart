@@ -4,12 +4,12 @@ import 'package:beck_booking/core/models/booking/booking_list_result.dart';
 import 'package:beck_booking/core/models/booking/booking_result.dart';
 import 'package:beck_booking/core/models/response/base_response.dart';
 import 'package:beck_booking/services/booking/booking_service.dart';
-import 'package:get/get.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../../../core/models/booking/booking_detail_result.dart';
 import '../../../core/widgets/dialog.dart';
 
-class BookingController extends GetxController {
+class BookingController extends ChangeNotifier {
   final _bookingService = BookingService();
 
   List<BookingResult> bookings = [];
@@ -20,7 +20,7 @@ class BookingController extends GetxController {
       if (response.success!) {
         var result = BookingListResult.fromJson(response.result);
         bookings = result.items ?? [];
-        update();
+        notifyListeners();
       }
       return bookings;
     } on Exception {

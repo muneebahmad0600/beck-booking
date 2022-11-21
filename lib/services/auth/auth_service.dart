@@ -3,18 +3,14 @@ import 'dart:developer';
 
 import 'package:beck_booking/core/models/response/base_response.dart';
 import 'package:beck_booking/core/models/tenant/tenant_input.dart';
-import 'package:get/get.dart';
+import 'package:dio/dio.dart';
 import '../../core/models/login/login_input.dart';
 import '../http/http_service.dart';
-import '../http/http_service_base.dart';
 import 'auth_service_base.dart';
 
 class AuthService implements AuthServiceBase {
   final int? userId = null;
-  final HttpServiceBase _httpService = Get.put(HttpService());
-  AuthService() {
-    _httpService.init();
-  }
+  final Dio _httpService = DioRequest().instance;
 
   // BeckIT
   // Mens_room
@@ -25,7 +21,7 @@ class AuthService implements AuthServiceBase {
     var url = 'api/services/app/Account/IsTenantAvailable';
     var data = json.encode(input.toJson());
     try {
-      var response = await _httpService.post(url, data);
+      var response = await _httpService.post(url, data: data);
       var parsedResponse = BaseResponse.fromJson(response.data);
       return parsedResponse;
     } on Exception catch (e) {
@@ -37,9 +33,9 @@ class AuthService implements AuthServiceBase {
   @override
   Future<BaseResponse> login(LoginInput input) async {
     var loginUrl = 'api/TokenAuth/Authenticate';
-    var loginData = input.toJson();
+    var payload = input.toJson();
     try {
-      var response = await _httpService.post(loginUrl, loginData);
+      var response = await _httpService.post(loginUrl, data: payload);
       var parsedResponse = BaseResponse.fromJson(response.data);
       return parsedResponse;
     } on Exception catch (e) {

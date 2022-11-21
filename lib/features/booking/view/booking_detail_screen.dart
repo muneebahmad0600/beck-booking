@@ -2,10 +2,9 @@ import 'package:beck_booking/core/models/booking/booking_comment_input.dart';
 import 'package:beck_booking/core/models/booking/booking_comments_list_result.dart';
 import 'package:beck_booking/core/models/booking/booking_detail_result.dart';
 import 'package:beck_booking/core/models/booking/booking_result.dart';
-import 'package:beck_booking/features/login/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../controller/booking_controller.dart';
 
@@ -19,7 +18,6 @@ class BookingDetailScreen extends StatefulWidget {
 }
 
 class _BookingDetailScreenState extends State<BookingDetailScreen> {
-  final controller = Get.find<BookingController>();
   late TextEditingController commentController;
 
   @override
@@ -48,25 +46,23 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: FutureBuilder(
-          future: controller.getBookingById(widget.booking.id.toString()),
+          future: context
+              .read<BookingController>()
+              .getBookingById(widget.booking.id.toString()),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var booking = snapshot.data;
-              return GetBuilder<AuthController>(
-                  init: Get.find<AuthController>(),
-                  builder: (context) {
-                    return Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _getBookingDetail(booking),
-                          _getBookingResponseSection(),
-                          _getCommentSection(booking),
-                        ],
-                      ),
-                    );
-                  });
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _getBookingDetail(booking),
+                    _getBookingResponseSection(),
+                    _getCommentSection(booking),
+                  ],
+                ),
+              );
             }
             return const Center(
               child: CircularProgressIndicator.adaptive(),
@@ -215,7 +211,8 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
         suffix: GestureDetector(
           onTap: () {
             if (commentController.text.trim() != '') {
-              controller
+              context
+                  .read<BookingController>()
                   .addComment(
                     BookingCommentInput(
                       activityId: booking!.activityId,
@@ -239,7 +236,9 @@ class _BookingDetailScreenState extends State<BookingDetailScreen> {
   FutureBuilder<BookingCommentListResult> _getCommentList(
       BookingDetailResult? booking) {
     return FutureBuilder(
-        future: controller.getBookingComments(booking!.activityId.toString()),
+        future: context
+            .read<BookingController>()
+            .getBookingComments(booking!.activityId.toString()),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Expanded(

@@ -1,6 +1,7 @@
 import 'package:beck_booking/features/groups/view/group_activity_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../controller/group_controller.dart';
 
@@ -9,10 +10,9 @@ class GroupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<GroupController>();
     return Scaffold(
       body: FutureBuilder(
-        future: controller.getGroups(
+        future: context.read<GroupController>().getGroups(
             {'UserType': "Customer", 'SkipCount': 0, "MaxResultCount": 10}),
         builder: (context, snapshot) {
           if (snapshot.hasData) {

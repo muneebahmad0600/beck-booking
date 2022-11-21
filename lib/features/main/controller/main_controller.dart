@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../../core/models/drawer item/drawer_item.dart';
 import '../../booking/view/bookings_screen.dart';
+import '../../groups/view/group_screen.dart';
 
-class MainController extends GetxController {
+class MainController extends ChangeNotifier {
   int _index = 0;
   final List<DrawerItem> _drawerItems = [
-    DrawerItem("Bookings", Icons.list_outlined, BookingsScreen()),
-    // DrawerItem("Groups", Icons.line_style_rounded, GroupScreen()),
+    DrawerItem("Bookings", Icons.list_outlined, const BookingsScreen()),
+    DrawerItem("Groups", Icons.line_style_rounded, const GroupScreen()),
   ];
 
   get index => _index;
@@ -17,6 +17,6 @@ class MainController extends GetxController {
 
   void onItemClick(int index) {
     _index = index;
-    update();
+    notifyListeners();
   }
 }

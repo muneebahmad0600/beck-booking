@@ -1,7 +1,7 @@
 import 'package:beck_booking/features/groups/controller/group_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class GroupActivityListScreen extends StatelessWidget {
   final int groupId;
@@ -10,13 +10,13 @@ class GroupActivityListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.find<GroupController>();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Group Invites"),
       ),
       body: FutureBuilder(
-        future: controller.getGroupInvites({'Id': groupId}),
+        future:
+            context.read<GroupController>().getGroupInvites({'Id': groupId}),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(

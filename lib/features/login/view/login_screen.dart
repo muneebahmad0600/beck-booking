@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:beck_booking/core/common/style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/widgets/fields.dart';
 import '../controller/auth_controller.dart';
@@ -15,21 +16,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late AuthController _controller;
   final _formKey = GlobalKey<FormState>();
   var userNameController = TextEditingController();
   var passwordController = TextEditingController();
   bool loading = false;
 
-  _LoginScreenState() {
-    Get.put(AuthController());
-    _controller = Get.find<AuthController>();
-  }
-
   @override
   void initState() {
     super.initState();
-    _controller.isTenantAvailable();
+    context.read<AuthController>().isTenantAvailable();
   }
 
   @override
@@ -112,11 +107,12 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         loading = true;
       });
-      _controller
+      context
+          .read<AuthController>()
           .login(
-        userNameController.text,
-        passwordController.text,
-      )
+            userNameController.text,
+            passwordController.text,
+          )
           .then((value) {
         setState(() {
           loading = false;

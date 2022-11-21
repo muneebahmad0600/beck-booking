@@ -1,6 +1,7 @@
 import 'package:beck_booking/core/models/login/session.dart';
 import 'package:beck_booking/core/models/response/base_response.dart';
 import 'package:beck_booking/global_bindings.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../../core/common/constants.dart';
@@ -11,7 +12,7 @@ import '../../../core/widgets/dialog.dart';
 import '../../../services/auth/auth_service.dart';
 import '../../../services/secure_storage/storage_user.dart';
 
-class AuthController extends GetxController {
+class AuthController extends ChangeNotifier {
   Session? session;
   final secureStorage = StorageUser();
   final _authService = AuthService();
@@ -68,7 +69,7 @@ class AuthController extends GetxController {
         return;
       }
       session = Session.fromJson(response.result);
-      update();
+      notifyListeners();
     } on Exception {
       displaySnackbar('Error!', 'Error fetching tenant');
     }
